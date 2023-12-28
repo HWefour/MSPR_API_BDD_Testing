@@ -8,14 +8,14 @@ app.use(bodyParser.urlencoded({extended : false}));
 app.use(bodyParser.json());
 
 
-app.get("/test" , (req,res)=> {
+/* app.get("/test" , (req,res)=> {
     res.status(200).json({success: true});
-});
+}); */
 
 //CREATE USERS
 app.post("/user" , async (req,res)=>{
     const user = await createUser(req.body);
-    req.status(201).json({id : user[0]});
+    res.status(201).json({id : user[0]});
 })
 
 // GET ALL USERS
