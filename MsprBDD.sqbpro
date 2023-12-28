@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/admin/Desktop/MSPR_API_BDD/MsprBDD.sqlite3" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="0"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="2234"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,8:mainAnnonces"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="Annonces" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="83"/><column index="2" value="116"/><column index="3" value="98"/><column index="4" value="84"/><column index="5" value="62"/><column index="7" value="49"/><column index="8" value="99"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="Botaniste" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="81"/><column index="2" value="40"/><column index="3" value="111"/><column index="4" value="136"/><column index="5" value="111"/><column index="6" value="99"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">-- Create Roles table
+
+CREATE TABLE IF NOT EXISTS Roles (
+
+  idRoles INTEGER PRIMARY KEY AUTOINCREMENT,
+
+  nom_role TEXT NOT NULL
+
+);
+
+
+
+-- Create Users table
+
+CREATE TABLE IF NOT EXISTS Users (
+
+  idUsers INTEGER PRIMARY KEY AUTOINCREMENT,
+
+  nom TEXT NOT NULL,
+
+  prenom TEXT NOT NULL,
+
+  email TEXT NOT NULL,
+
+  mdp TEXT NOT NULL,
+
+  photo_profil TEXT NOT NULL,
+
+  bio TEXT,
+
+  ville TEXT NOT NULL,
+
+  avis INTEGER,
+
+  Roles_idRoles INTEGER NOT NULL,
+
+  FOREIGN KEY (Roles_idRoles) REFERENCES Roles (idRoles)
+
+);
+
+
+
+-- Create Botaniste table
+
+CREATE TABLE IF NOT EXISTS Botaniste (
+
+  idBotaniste INTEGER PRIMARY KEY AUTOINCREMENT,
+
+  siret INTEGER NOT NULL,
+
+  nom_entreprise TEXT NOT NULL,
+
+  adresse_entreprise TEXT NOT NULL,
+
+  num_entreprise INTEGER NOT NULL,
+
+  Users_idUsers INTEGER NOT NULL,
+
+  FOREIGN KEY (Users_idUsers) REFERENCES Users (idUsers)
+
+);
+
+
+
+-- Create Photos table
+
+CREATE TABLE IF NOT EXISTS Photos (
+
+  idPhotos INTEGER PRIMARY KEY AUTOINCREMENT,
+
+  url_photo TEXT NOT NULL,
+
+  Users_idUsers INTEGER NOT NULL,
+
+  <!-- idBlob INTEGER NOT NULL, -->
+
+  FOREIGN KEY (Users_idUsers) REFERENCES Users (idUsers),
+
+  <!-- FOREIGN KEY (idBlob) REFERENCES blob (idBlob) -->
+
+);
+<!-- CREATE TABLE IF NOT EXIST blob (
+  idBlob INTEGER PRIMARY KEY AUTOINCREMENT , 
+
+  BLOB TYPE BLOB
+) -->
+
+
+
+-- Create Annonces table
+
+CREATE TABLE IF NOT EXISTS Annonces (
+
+  idAnnonces INTEGER PRIMARY KEY AUTOINCREMENT,
+
+  date_publication DATETIME NOT NULL,
+
+  text_annonce TEXT NOT NULL,
+
+  date_debut DATE NOT NULL,
+
+  date_fin DATE NOT NULL,
+
+  titre_annonce TEXT NOT NULL,
+
+  statut TEXT NOT NULL,
+
+  Users_idUsers INTEGER NOT NULL,
+
+  FOREIGN KEY (Users_idUsers) REFERENCES Users (idUsers)
+
+);
+-- modifier txt 
+
+
+-- Create Annonces_has_Photos table
+
+CREATE TABLE IF NOT EXISTS Annonces_has_Photos (
+
+  Annonces_idAnnonces INTEGER NOT NULL,
+
+  Photos_idPhotos INTEGER NOT NULL,
+
+  PRIMARY KEY (Annonces_idAnnonces, Photos_idPhotos),
+
+  FOREIGN KEY (Annonces_idAnnonces) REFERENCES Annonces (idAnnonces),
+
+  FOREIGN KEY (Photos_idPhotos) REFERENCES Photos (idPhotos)
+
+);
+
+
+
+-- Create Commentaires_users table
+
+CREATE TABLE IF NOT EXISTS Commentaires_users (
+
+  idCommentaires INTEGER PRIMARY KEY AUTOINCREMENT,
+
+  text_commentaire TEXT NOT NULL
+
+);
+
+
+
+-- Create Commentaire_photo table
+
+CREATE TABLE IF NOT EXISTS Commentaire_photo (
+
+  idCommentaire_photo INTEGER PRIMARY KEY AUTOINCREMENT,
+
+  Commentaire_photo TEXT NOT NULL,
+
+  Users_idUsers INTEGER NOT NULL,
+
+  Photos_idPhotos INTEGER NOT NULL,
+
+  FOREIGN KEY (Users_idUsers) REFERENCES Users (idUsers),
+
+  FOREIGN KEY (Photos_idPhotos) REFERENCES Photos (idPhotos)
+
+);
+
+
+
+-- Create Commentaires_users_has_Users table
+
+CREATE TABLE IF NOT EXISTS Commentaires_users_has_Users (
+
+  Commentaires_users_idCommentaires INTEGER NOT NULL,
+
+  Users_idUsers INTEGER NOT NULL,
+
+  PRIMARY KEY (Commentaires_users_idCommentaires, Users_idUsers),
+
+  FOREIGN KEY (Commentaires_users_idCommentaires) REFERENCES Commentaires_users (idCommentaires),
+
+  FOREIGN KEY (Users_idUsers) REFERENCES Users (idUsers)
+
+);
+
+</sql><current_tab id="0"/></tab_sql></sqlb_project>
